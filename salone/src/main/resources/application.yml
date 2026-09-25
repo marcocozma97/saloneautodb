@@ -13,3 +13,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    scadenza-minuti: 120
+  admin:
+    email: admin@salone.it
+    password: ${ADMIN_PASSWORD}
+  cors:
+    allowed-origin: ${ALLOWED_ORIGIN:http://localhost:5173}
