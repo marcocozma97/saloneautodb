@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: salone
+  datasource:
+    url: jdbc:postgresql://localhost:5432/salone
+    username: postgres
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
