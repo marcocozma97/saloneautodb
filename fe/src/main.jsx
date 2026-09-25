@@ -4,6 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { AuthProvider } from "./AuthContext.jsx";
 import "./index.css";
+import { applicaFavicon } from "./favicon.js";
+
+applicaFavicon();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
