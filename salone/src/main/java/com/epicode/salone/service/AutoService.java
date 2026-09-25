@@ -2,9 +2,11 @@ package com.epicode.salone.service;
 
 import com.epicode.salone.dto.*;
 import com.epicode.salone.entity.Auto;
+import com.epicode.salone.event.PrezzoCambiatoEvent;
 import com.epicode.salone.exception.BadRequestException;
 import com.epicode.salone.exception.NotFoundException;
 import com.epicode.salone.repository.AutoRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +28,11 @@ public class AutoService {
     );
 
     private final AutoRepository autoRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public AutoService(AutoRepository autoRepository) {
+    public AutoService(AutoRepository autoRepository, ApplicationEventPublisher eventPublisher) {
         this.autoRepository = autoRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     // ---------- PARTE PUBBLICA ----------
@@ -101,12 +105,22 @@ public class AutoService {
         return AutoAdminResponse.from(autoRepository.save(auto));
     }
 
-    // L'unico punto dove cambia il prezzo
+    // L'unico punto dove cambia il prezzo.
+    // @Transactional è indispensabile: @TransactionalEventListener riceve l'evento
     @Transactional
     public AutoAdminResponse cambiaPrezzo(Long id, Integer nuovoPrezzo) {
         Auto auto = trovaAuto(id);
+        Integer vecchioPrezzo = auto.getPrezzo();
+
         auto.setPrezzo(nuovoPrezzo);
-        return AutoAdminResponse.from(autoRepository.save(auto));
+        Auto salvata = autoRepository.save(auto);
+
+        // Pubblichiamo l'evento solo se il prezzo SCENDE e l'auto è visibile al pubblico.
+        if (nuovoPrezzo < vecchioPrezzo && salvata.isPubblicata()) {
+            eventPublisher.publishEvent(new PrezzoCambiatoEvent(id, vecchioPrezzo, nuovoPrezzo));
+        }
+
+        return AutoAdminResponse.from(salvata);
     }
 
     // ---------- METODI DI SUPPORTO ----------
@@ -119,6 +133,7 @@ public class AutoService {
     private Sort costruisciOrdinamento(String ordina, String direzione) {
         String campo = CAMPI_ORDINABILI.get(ordina);
         if (campo == null) {
+            // non si ripete nel messaggio il valore mandato dal client
             throw new BadRequestException("Ordinamento non ammesso. Valori validi: prezzo, anno, km, marca, recenti");
         }
 

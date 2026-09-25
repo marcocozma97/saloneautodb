@@ -1,6 +1,7 @@
 package com.epicode.salone.controller;
 
 import com.epicode.salone.dto.AvvisoResponse;
+import com.epicode.salone.dto.DisattivaRequest;
 import com.epicode.salone.dto.NuovoAvvisoRequest;
 import com.epicode.salone.dto.SogliaRequest;
 import com.epicode.salone.service.AvvisoService;
@@ -49,6 +50,13 @@ public class AvvisoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void elimina(Authentication authentication, @PathVariable Long id) {
         avvisoService.elimina(idUtente(authentication), id);
+    }
+
+    // raggiungibile senza login: l'utente arriva dal link nella mail
+    @PostMapping("/disattiva")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void disattiva(@Valid @RequestBody DisattivaRequest richiesta) {
+        avvisoService.disattivaConToken(richiesta.token());
     }
 
     private Long idUtente(Authentication authentication) {

@@ -38,6 +38,8 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auto/**").permitAll()
+                        // link "disattiva avviso" nella mail: basta il token casuale, niente login
+                        .requestMatchers(HttpMethod.POST, "/api/avvisi/disattiva").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -54,7 +56,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // CORS: accettiamo richieste dal browser solo dall'indirizzo esatto del frontend
+    // accettiamo richieste dal browser solo dall'indirizzo esatto del frontend
     @Bean
     public CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed-origin}") String allowedOrigin) {
         CorsConfiguration config = new CorsConfiguration();

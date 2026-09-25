@@ -94,8 +94,16 @@ public class AvvisoService {
         avvisoRepository.delete(avviso);
     }
 
+    // Link della mail: nessun login, basta il token.
+    public void disattivaConToken(String token) {
+        Avviso avviso = avvisoRepository.findByTokenDisattivazione(token)
+                .orElseThrow(() -> new NotFoundException("Link non valido o già utilizzato"));
+        avvisoRepository.delete(avviso);
+    }
+
     // ---------- METODI DI SUPPORTO ----------
 
+    // id e proprietario INSIEME
     private Avviso trovaAvvisoDellUtente(Long idUtente, Long idAvviso) {
         return avvisoRepository.findByIdAndUtenteId(idAvviso, idUtente)
                 .orElseThrow(() -> new NotFoundException("Avviso non trovato"));
