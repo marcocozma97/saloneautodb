@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, formattaEuro } from "../api";
+import AutoIllustrazione from "../components/AutoIllustrazione";
 
 export default function Preferiti() {
   const [preferiti, setPreferiti] = useState([]);
@@ -26,10 +27,18 @@ export default function Preferiti() {
 
   return (
     <section>
-      <h1>Preferiti e avvisi di prezzo</h1>
+      <div className="pagina-titolo">
+        <h1>Preferiti e avvisi</h1>
+        <p>Fissa una soglia su un'auto: quando il prezzo la raggiunge ti mandiamo una mail.</p>
+      </div>
+
       {errore && <p className="errore">{errore}</p>}
+
       {preferiti.length === 0 && (
-        <p>Non hai ancora auto preferite. <Link to="/">Sfoglia il catalogo</Link></p>
+        <div className="vuoto">
+          <p>Non hai ancora auto preferite.</p>
+          <Link to="/" className="bottone">Sfoglia il catalogo</Link>
+        </div>
       )}
 
       {preferiti.map((preferito) => (
@@ -62,50 +71,61 @@ function RigaPreferito({ preferito, avviso, onAggiorna }) {
 
   return (
     <article className="riga">
+      <Link to={"/auto/" + auto.id} className="riga__miniatura">
+        <AutoIllustrazione marca={auto.marca} modello={auto.modello} />
+      </Link>
+
       <div>
-        <h2><Link to={"/auto/" + auto.id}>{auto.marca} {auto.modello}</Link></h2>
-        <p>Prezzo attuale: <strong>{formattaEuro(auto.prezzo)}</strong></p>
+        <span className="etichetta">{auto.marca}</span>
+        <h2><Link to={"/auto/" + auto.id}>{auto.modello}</Link></h2>
+        <p className="riga__prezzo">Prezzo attuale <strong>{formattaEuro(auto.prezzo)}</strong></p>
       </div>
 
       <div className="avviso">
         {avviso ? (
           <>
             <p>
-              Avviso a <strong>{formattaEuro(avviso.soglia)}</strong> ·{" "}
+              Avviso a <strong>{formattaEuro(avviso.soglia)}</strong>{" "}
               {avviso.inviato
-                ? <span className="stato-scattato">scattato: ti abbiamo scritto</span>
-                : <span className="stato-attivo">attivo</span>}
+                ? <span className="stato-scattato">Scattato: ti abbiamo scritto</span>
+                : <span className="stato-attivo">Attivo</span>}
             </p>
 
-            {!avviso.inviato && (
-              <div className="riga-azioni">
-                <input type="number" min="1" placeholder="Nuova soglia" value={soglia}
-                       onChange={(e) => setSoglia(e.target.value)} />
-                <button onClick={() => esegui(() => api.modificaSoglia(avviso.id, Number(soglia)))}>
-                  Modifica soglia
-                </button>
-              </div>
-            )}
-
-            <button className="bottone-secondario"
-                    onClick={() => esegui(() => api.eliminaAvviso(avviso.id))}>
-              Elimina avviso
-            </button>
+            <div className="riga-azioni">
+              {!avviso.inviato && (
+                <>
+                  <input type="number" min="1" placeholder="Nuova soglia (€)" value={soglia}
+                         onChange={(e) => setSoglia(e.target.value)} />
+                  <button className="bottone-piccolo"
+                          onClick={() => esegui(() => api.modificaSoglia(avviso.id, Number(soglia)))}>
+                    Modifica
+                  </button>
+                </>
+              )}
+              <button className="bottone-secondario bottone-piccolo"
+                      onClick={() => esegui(() => api.eliminaAvviso(avviso.id))}>
+                Elimina avviso
+              </button>
+            </div>
           </>
         ) : (
-          <div className="riga-azioni">
-            <input type="number" min="1" placeholder="Avvisami sotto (€)" value={soglia}
-                   onChange={(e) => setSoglia(e.target.value)} />
-            <button onClick={() => esegui(() => api.creaAvviso(auto.id, Number(soglia)))}>
-              Crea avviso
-            </button>
-          </div>
+          <>
+            <p>Nessun avviso su questa auto.</p>
+            <div className="riga-azioni">
+              <input type="number" min="1" placeholder="Avvisami sotto (€)" value={soglia}
+                     onChange={(e) => setSoglia(e.target.value)} />
+              <button className="bottone-piccolo"
+                      onClick={() => esegui(() => api.creaAvviso(auto.id, Number(soglia)))}>
+                Crea avviso
+              </button>
+            </div>
+          </>
         )}
       </div>
 
-      <button className="bottone-pericolo"
+      <button className="bottone-pericolo bottone-piccolo"
               onClick={() => esegui(() => api.rimuoviPreferito(preferito.id))}>
-        Rimuovi dai preferiti
+        Rimuovi
       </button>
 
       {errore && <p className="errore">{errore}</p>}
