@@ -38,6 +38,14 @@ export default function Registrazione() {
           <input type="password" value={password} minLength={8} maxLength={72}
                  onChange={(e) => setPassword(e.target.value)} required />
         </label>
+
+        <p>
+          Creando l'account confermi di aver letto la{" "}
+          <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>{" "}
+          e la{" "}
+          <a href="/cookie.html" target="_blank" rel="noopener noreferrer">Cookie Policy</a>.
+        </p>
+
         <button type="submit">Crea account</button>
       </form>
       {errore && <p className="errore">{errore}</p>}

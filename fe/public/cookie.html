@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy - Il tuo salone</title>
+    <style>
+        body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f5f6fa; color: #1c2340; line-height: 1.6; }
+        header, footer { background: #1c2340; padding: 14px 24px; }
+        header a, footer a { color: #ffffff; text-decoration: none; margin-right: 16px; }
+        main { max-width: 820px; margin: 0 auto; padding: 24px; background: #ffffff; }
+        h1 { margin-top: 0; }
+        h2 { margin-top: 32px; border-bottom: 1px solid #e3e4ef; padding-bottom: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+        th, td { border: 1px solid #e3e4ef; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #f5f6fa; }
+        code { background: #f5f6fa; padding: 2px 4px; border-radius: 4px; }
+        .nota { color: #5a6078; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/"><strong>Il tuo salone</strong></a>
+    <a href="/">Torna al catalogo</a>
+</header>
+
+<main>
+    <h1>Cookie Policy</h1>
+    <p class="nota">Ultimo aggiornamento: [GIORNO MESE ANNO]</p>
+
+    <p>
+        Questa pagina spiega che cosa l'applicazione «Il tuo salone» salva nel tuo browser e perché.
+    </p>
+
+    <h2>1. Cookie</h2>
+    <p>
+        Il salone <strong>non usa cookie</strong>: né cookie propri, né cookie di terze parti,
+        né cookie di profilazione, pubblicità o statistica.
+    </p>
+
+    <h2>2. Cosa salviamo nel browser (localStorage)</h2>
+    <p>
+        Quando accedi, il salone salva due informazioni nel <em>localStorage</em>, una memoria del
+        browser simile ai cookie ma che non viene inviata automaticamente al server. La normativa
+        sui cookie si applica anche a questa memoria: per questo te la descriviamo qui.
+    </p>
+    <table>
+        <tr><th>Nome</th><th>Contenuto</th><th>A cosa serve</th><th>Durata</th></tr>
+        <tr>
+            <td><code>salone_token</code></td>
+            <td>Un codice di accesso firmato (JWT) che contiene solo il numero identificativo del tuo account e la scadenza. Non contiene email, nome né password.</td>
+            <td>Farti restare collegato mentre passi da una pagina all'altra.</td>
+            <td>Viene cancellato quando premi «Esci». Il codice smette comunque di funzionare dopo 120 minuti o se elimini l'account.</td>
+        </tr>
+        <tr>
+            <td><code>salone_utente</code></td>
+            <td>Il tuo nome e il tuo ruolo (utente o amministratore).</td>
+            <td>Mostrare il saluto «Ciao, …» e il menu giusto. I permessi veri sono sempre controllati dal server.</td>
+            <td>Viene cancellato quando premi «Esci».</td>
+        </tr>
+    </table>
+    <p>
+        Se non accedi, il salone non salva niente nel tuo browser.
+    </p>
+
+    <h2>3. Serve il consenso?</h2>
+    <p>
+        No. Si tratta solo di strumenti tecnici strettamente necessari per il servizio che richiedi
+        (restare collegato al tuo account). Non c'è nessuno strumento di profilazione o di terze
+        parti, quindi il sito non mostra un banner di consenso.
+    </p>
+
+    <h2>4. Come cancellare questi dati</h2>
+    <ul>
+        <li>Premi <strong>«Esci»</strong> nella barra in alto: entrambe le informazioni vengono cancellate.</li>
+        <li>Oppure cancella i «dati dei siti» dalle impostazioni del tuo browser.</li>
+        <li>Se elimini l'account dal profilo, oltre ai dati sul server vengono cancellati anche questi.</li>
+    </ul>
+
+    <h2>5. Altre informazioni</h2>
+    <p>
+        Per sapere quali dati conserviamo sul server e come esercitare i tuoi diritti leggi la
+        <a href="/privacy.html">Privacy Policy</a>.
+    </p>
+</main>
+
+<footer>
+    <a href="/">Torna al salone</a>
+    <a href="/privacy.html">Privacy Policy</a>
+</footer>
+</body>
+</html>

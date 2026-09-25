@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import RottaProtetta from "./components/RottaProtetta";
 import Catalogo from "./pages/Catalogo";
 import DettaglioAuto from "./pages/DettaglioAuto";
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="*" element={<NonTrovata />} />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }

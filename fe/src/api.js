@@ -50,7 +50,7 @@ async function apiFetch(percorso, opzioni = {}) {
     body: opzioni.body !== undefined ? JSON.stringify(opzioni.body) : undefined,
   });
 
-  // token scaduto o non più valido (per esempio account eliminato): torno al login
+  // token scaduto o non più valido: torniamo al login
   if (risposta.status === 401 && token) {
     cancellaSessione();
     window.location.href = "/login";
@@ -63,12 +63,12 @@ async function apiFetch(percorso, opzioni = {}) {
       const dati = await risposta.json();
       if (dati.messaggio) messaggio = dati.messaggio;
     } catch {
-      // la risposta non era JSON: tengo il messaggio generico
+      // la risposta non era JSON: teniamo il messaggio generico
     }
     throw new Error(messaggio);
   }
 
-  // 204 No Content
+  // 204 No Content: nessun corpo da leggere
   if (risposta.status === 204) return null;
 
   return risposta.json();
@@ -77,12 +77,15 @@ async function apiFetch(percorso, opzioni = {}) {
 // ---------- LE CHIAMATE DELL'APPLICAZIONE ----------
 
 export const api = {
-  // autenticazione
+  // autenticazione e profilo
   registrazione: (dati) =>
     apiFetch("/api/auth/registrazione", { method: "POST", body: dati, pubblica: true }),
   login: (dati) =>
     apiFetch("/api/auth/login", { method: "POST", body: dati, pubblica: true }),
   profilo: () => apiFetch("/api/profilo"),
+  aggiornaProfilo: (nome) =>
+    apiFetch("/api/profilo", { method: "PUT", body: { nome: nome } }),
+  eliminaAccount: () => apiFetch("/api/profilo", { method: "DELETE" }), // Parte 8
 
   // catalogo pubblico
   catalogo: (testo, ordina, direzione) => {
