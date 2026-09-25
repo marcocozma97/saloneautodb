@@ -1,5 +1,6 @@
 package com.epicode.salone.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import com.epicode.salone.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> gestisciJsonNonValido(HttpMessageNotReadableException e) {
         return costruisci(HttpStatus.BAD_REQUEST, "Corpo della richiesta non valido");
+    }
+    // vincoli del database violati (per esempio due richieste identiche nello stesso istante)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> gestisciDatiDuplicati(DataIntegrityViolationException e) {
+        return costruisci(HttpStatus.CONFLICT, "Operazione in conflitto con dati già presenti");
     }
 
     private ResponseEntity<ErrorResponse> costruisci(HttpStatus stato, String messaggio) {
